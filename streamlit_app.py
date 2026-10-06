@@ -1,25 +1,23 @@
-import math
-import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
 
-st.title("Data App Assignment, on July 14th")[cite: 1, 3]
+st.title("Data App Assignment, on July 14th")
 
-st.write("### Input Data and Examples")[cite: 1, 3]
-df = pd.read_csv("Superstore_Sales_utf8.csv", parse_dates=True)[cite: 1, 3]
-st.dataframe(df)[cite: 1, 3]
+st.write("### Input Data and Examples")
+df = pd.read_csv("Superstore_Sales_utf8.csv", parse_dates=True)
+st.dataframe(df)
 
 # This bar chart will not have solid bars--but lines--because the detail data is being graphed independently
-st.bar_chart(df, x="Category", y="Sales")[cite: 1, 3]
+st.bar_chart(df, x="Category", y="Sales")
 
 # Aggregated bar chart
-st.dataframe(df.groupby("Category").sum(numeric_only=True))[cite: 1, 3]
+st.dataframe(df.groupby("Category").sum(numeric_only=True))
 st.bar_chart(
     df.groupby("Category", as_index=False).sum(numeric_only=True),
     x="Category",
     y="Sales",
     color="#04f",
-)[cite: 1, 3]
+)
 
 # Calculate overall metrics across ALL products before filtering or setting index
 overall_total_sales = df["Sales"].sum()
@@ -31,18 +29,18 @@ overall_profit_margin = (
 )
 
 # Aggregating by time
-df["Order_Date"] = pd.to_datetime(df["Order_Date"])[cite: 1, 3]
-df.set_index("Order_Date", inplace=True)[cite: 1, 3]
+df["Order_Date"] = pd.to_datetime(df["Order_Date"])
+df.set_index("Order_Date", inplace=True)
 
-# Changed freq="M" to freq="ME" to prevent Pandas ValueError
+# Using freq="ME" (Month End) for modern Pandas compatibility
 sales_by_month = (
     df.filter(items=["Sales"]).groupby(pd.Grouper(freq="ME")).sum()
 )
 
-st.dataframe(sales_by_month)[cite: 1, 3]
-st.line_chart(sales_by_month, y="Sales")[cite: 1, 3]
+st.dataframe(sales_by_month)
+st.line_chart(sales_by_month, y="Sales")
 
-st.write("## Your additions")[cite: 1, 3]
+st.write("## Your additions")
 
 # ---------------------------------------------------------
 # (1) Category dropdown
