@@ -3,23 +3,23 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
 
-st.title("Data App Assignment, on July 14th")
+st.title("Data App Assignment, on July 14th")[cite: 1, 3]
 
-st.write("### Input Data and Examples")
-df = pd.read_csv("Superstore_Sales_utf8.csv", parse_dates=True)
-st.dataframe(df)
+st.write("### Input Data and Examples")[cite: 1, 3]
+df = pd.read_csv("Superstore_Sales_utf8.csv", parse_dates=True)[cite: 1, 3]
+st.dataframe(df)[cite: 1, 3]
 
 # This bar chart will not have solid bars--but lines--because the detail data is being graphed independently
-st.bar_chart(df, x="Category", y="Sales")
+st.bar_chart(df, x="Category", y="Sales")[cite: 1, 3]
 
 # Aggregated bar chart
-st.dataframe(df.groupby("Category").sum(numeric_only=True))
+st.dataframe(df.groupby("Category").sum(numeric_only=True))[cite: 1, 3]
 st.bar_chart(
     df.groupby("Category", as_index=False).sum(numeric_only=True),
     x="Category",
     y="Sales",
     color="#04f",
-)
+)[cite: 1, 3]
 
 # Calculate overall metrics across ALL products before filtering or setting index
 overall_total_sales = df["Sales"].sum()
@@ -31,17 +31,18 @@ overall_profit_margin = (
 )
 
 # Aggregating by time
-df["Order_Date"] = pd.to_datetime(df["Order_Date"])
-df.set_index("Order_Date", inplace=True)
+df["Order_Date"] = pd.to_datetime(df["Order_Date"])[cite: 1, 3]
+df.set_index("Order_Date", inplace=True)[cite: 1, 3]
 
+# Changed freq="M" to freq="ME" to prevent Pandas ValueError
 sales_by_month = (
-    df.filter(items=["Sales"]).groupby(pd.Grouper(freq="M")).sum()
+    df.filter(items=["Sales"]).groupby(pd.Grouper(freq="ME")).sum()
 )
 
-st.dataframe(sales_by_month)
-st.line_chart(sales_by_month, y="Sales")
+st.dataframe(sales_by_month)[cite: 1, 3]
+st.line_chart(sales_by_month, y="Sales")[cite: 1, 3]
 
-st.write("## Your additions")
+st.write("## Your additions")[cite: 1, 3]
 
 # ---------------------------------------------------------
 # (1) Category dropdown
@@ -55,14 +56,13 @@ cat_filtered_df = df[df["Category"] == selected_category]
 # ---------------------------------------------------------
 # (2) Multi-select for Sub_Category within selected Category
 # ---------------------------------------------------------
-# Handles either 'Sub_Category' or 'Sub-Category' column name
 subcat_col = "Sub_Category" if "Sub_Category" in df.columns else "Sub-Category"
 subcategories = sorted(cat_filtered_df[subcat_col].unique().tolist())
 
 selected_subcategories = st.multiselect(
     f"Select Sub-Category items in '{selected_category}'",
     options=subcategories,
-    default=subcategories,  # Pre-selects all items by default
+    default=subcategories,
 )
 
 # Filter dataset to selected Sub-Categories
@@ -74,7 +74,7 @@ selected_df = cat_filtered_df[cat_filtered_df[subcat_col].isin(selected_subcateg
 st.write("### Monthly Sales for Selected Sub-Categories")
 
 if not selected_df.empty:
-    selected_sales_by_month = selected_df.groupby(pd.Grouper(freq="M"))["Sales"].sum()
+    selected_sales_by_month = selected_df.groupby(pd.Grouper(freq="ME"))["Sales"].sum()
     st.line_chart(selected_sales_by_month)
 else:
     st.warning("Please select at least one Sub-Category.")
@@ -92,7 +92,6 @@ if selected_total_sales != 0:
 else:
     selected_profit_margin = 0.0
 
-# Difference between selected selection's profit margin and overall dataset average
 margin_delta = selected_profit_margin - overall_profit_margin
 
 col1, col2, col3 = st.columns(3)
