@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 
-st.title("Data App Assignment, on July 14th")
+st.title("Data App Assignment, on October. 6th, 2026")
 
 st.write("### Input Data and Examples")
 df = pd.read_csv("Superstore_Sales_utf8.csv", parse_dates=True)
